@@ -340,3 +340,8 @@ ASALocalRun/
 
 # QnAMaker json files
 /solutions/**/*.qna
+
+# Local deployment files
+/solutions/Virtual-Assistant/src/csharp/skills/*skill/*skill/.deployment
+/solutions/Virtual-Assistant/src/csharp/skills/*skill/*skill/publish
+/solutions/Virtual-Assistant/src/csharp/skills/*skill/*skill/publish.cmd
