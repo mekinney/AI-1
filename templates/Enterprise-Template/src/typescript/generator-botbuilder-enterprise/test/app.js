@@ -45,7 +45,7 @@ describe("The generator-botbuilder-enterprise ", () => {
     commonDirectories.forEach(directoryName =>
       it(directoryName + " folder", () => {
         assert.file(
-          path.join(__dirname, botGenerationPath, "/src/" + directoryName + "/")
+          path.join(__dirname, botGenerationPath, "src", directoryName)
         );
       })
     );
@@ -57,7 +57,8 @@ describe("The generator-botbuilder-enterprise ", () => {
           path.join(
             __dirname,
             botGenerationPath,
-            "/cognitiveModels/" + directoryName + "/"
+            "cognitiveModels",
+            directoryName
           )
         );
       })
@@ -76,7 +77,7 @@ describe("The generator-botbuilder-enterprise ", () => {
     ];
     rootFiles.forEach(fileName =>
       it(fileName + "file", () => {
-        assert.file(path.join(__dirname, botGenerationPath, "/" + fileName));
+        assert.file(path.join(__dirname, botGenerationPath, fileName));
       })
     );
   });
@@ -85,9 +86,7 @@ describe("The generator-botbuilder-enterprise ", () => {
     const srcFiles = [botNameCamelCase + ".ts", "botServices.ts"];
     srcFiles.forEach(fileName =>
       it(fileName + " file", () => {
-        assert.file(
-          path.join(__dirname, botGenerationPath, "/src/" + fileName)
-        );
+        assert.file(path.join(__dirname, botGenerationPath, "src", fileName));
       })
     );
   });
@@ -112,7 +111,7 @@ describe("The generator-botbuilder-enterprise ", () => {
     it("an import component containing the given name", () => {
       assert.fileContent(
         path.join(__dirname, botGenerationPath, "/src/index.ts"),
-        `import { ${botNamePascalCase} } from "./${botNameCamelCase}"`
+        `import { ${botNamePascalCase} } from './${botNameCamelCase}'`
       );
     });
 
@@ -137,7 +136,8 @@ describe("The generator-botbuilder-enterprise ", () => {
         path.join(
           __dirname,
           botGenerationPath,
-          "/src/" + botNameCamelCase + ".ts"
+          "src",
+          botNameCamelCase + ".ts"
         ),
         `export class ${botNamePascalCase}`
       );
@@ -148,9 +148,10 @@ describe("The generator-botbuilder-enterprise ", () => {
         path.join(
           __dirname,
           botGenerationPath,
-          "/src/" + botNameCamelCase + ".ts"
+          "src",
+          botNameCamelCase + ".ts"
         ),
-        `("${botNamePascalCase}")`
+        `('${botNamePascalCase}')`
       );
     });
   });

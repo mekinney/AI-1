@@ -105,7 +105,6 @@ module.exports = class extends Generator {
   }
 
   prompting() {
-    
     this.log(bigBot);
     // Validate language option
     if (
@@ -182,7 +181,7 @@ module.exports = class extends Generator {
           this.log(
             chalk.red("\n", "ERROR: This is not a valid path. Please try again")
           );
-        },
+        }
       },
       {
         type: "confirm",
@@ -240,7 +239,7 @@ module.exports = class extends Generator {
       botGenerationPath = path.join(this.props.botGenerationPath, botName);
     }
 
-    if (fs.existsSync(botGenerationPath)){
+    if (fs.existsSync(botGenerationPath)) {
       isAlreadyCreated = true;
       return;
     }
@@ -337,7 +336,7 @@ module.exports = class extends Generator {
   install() {
     if (this.props.finalConfirmation !== true || isAlreadyCreated) {
       return;
-    }      
+    }
 
     process.chdir(botGenerationPath);
     this.installDependencies({ npm: true, bower: false });
@@ -345,13 +344,28 @@ module.exports = class extends Generator {
 
   end() {
     if (this.props.finalConfirmation === true) {
-      if(isAlreadyCreated){
-        this.log(chalk.red.bold("-------------------------------------------------------------------------------------------- "));
-        this.log(chalk.red.bold(" ERROR: It's seems like you already have a bot with the same name in the destination path. "));
-        this.log(chalk.red.bold(" Try again changing the name or the destination path or deleting the previous bot. "));
-        this.log(chalk.red.bold("-------------------------------------------------------------------------------------------- "));
-      }
-      else{
+      if (isAlreadyCreated) {
+        this.log(
+          chalk.red.bold(
+            "-------------------------------------------------------------------------------------------- "
+          )
+        );
+        this.log(
+          chalk.red.bold(
+            " ERROR: It's seems like you already have a bot with the same name in the destination path. "
+          )
+        );
+        this.log(
+          chalk.red.bold(
+            " Try again changing the name or the destination path or deleting the previous bot. "
+          )
+        );
+        this.log(
+          chalk.red.bold(
+            "-------------------------------------------------------------------------------------------- "
+          )
+        );
+      } else {
         this.log(chalk.green("------------------------ "));
         this.log(chalk.green(" Your new bot is ready!  "));
         this.log(chalk.green("------------------------ "));
