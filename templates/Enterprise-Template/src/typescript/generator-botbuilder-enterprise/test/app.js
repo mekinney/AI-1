@@ -11,9 +11,10 @@ describe("The generator-botbuilder-enterprise ", () => {
   var botName = "myBot";
   const botDesc = "A description for myBot";
   const botLang = "en";
+  botName = _kebabCase(botName).replace(/([^a-z0-9-]+)/gi, "");
   const botNamePascalCase = _upperFirst(_camelCase(botName));
   const botNameCamelCase = _camelCase(botName);
-  botName = _kebabCase(botName);
+  const botGenerationPath = path.join("tmp", botName);
 
   before(() => {
     return helpers
@@ -23,6 +24,8 @@ describe("The generator-botbuilder-enterprise ", () => {
         botName: botName,
         botDesc: botDesc,
         botLang: botLang,
+        confirmationPath: true,
+        botPath: process.cwd(),
         finalConfirmation: true
       });
   });
@@ -42,10 +45,7 @@ describe("The generator-botbuilder-enterprise ", () => {
     commonDirectories.forEach(directoryName =>
       it(directoryName + " folder", () => {
         assert.file(
-          path.join(
-            __dirname,
-            "tmp/" + botNameCamelCase + "/src/" + directoryName + "/"
-          )
+          path.join(__dirname, botGenerationPath, "/src/" + directoryName + "/")
         );
       })
     );
@@ -56,11 +56,8 @@ describe("The generator-botbuilder-enterprise ", () => {
         assert.file(
           path.join(
             __dirname,
-            "tmp/" +
-              botNameCamelCase +
-              "/cognitiveModels/" +
-              directoryName +
-              "/"
+            botGenerationPath,
+            "/cognitiveModels/" + directoryName + "/"
           )
         );
       })
@@ -79,9 +76,7 @@ describe("The generator-botbuilder-enterprise ", () => {
     ];
     rootFiles.forEach(fileName =>
       it(fileName + "file", () => {
-        assert.file(
-          path.join(__dirname, "tmp/" + botNameCamelCase + "/" + fileName)
-        );
+        assert.file(path.join(__dirname, botGenerationPath, "/" + fileName));
       })
     );
   });
@@ -91,7 +86,7 @@ describe("The generator-botbuilder-enterprise ", () => {
     srcFiles.forEach(fileName =>
       it(fileName + " file", () => {
         assert.file(
-          path.join(__dirname, "tmp/" + botNameCamelCase + "/src/" + fileName)
+          path.join(__dirname, botGenerationPath, "/src/" + fileName)
         );
       })
     );
@@ -100,14 +95,14 @@ describe("The generator-botbuilder-enterprise ", () => {
   describe("should have in the package.json", () => {
     it("a name property with the given name", () => {
       assert.fileContent(
-        path.join(__dirname, "tmp/" + botNameCamelCase + "/package.json"),
+        path.join(__dirname, botGenerationPath, "/package.json"),
         `"name": "${botName}"`
       );
     });
 
     it("a description property with given description", () => {
       assert.fileContent(
-        path.join(__dirname, "tmp/" + botNameCamelCase + "/package.json"),
+        path.join(__dirname, botGenerationPath, "/package.json"),
         `"description": "${botDesc}"`
       );
     });
@@ -116,21 +111,21 @@ describe("The generator-botbuilder-enterprise ", () => {
   describe("should have in the index file", () => {
     it("an import component containing the given name", () => {
       assert.fileContent(
-        path.join(__dirname, "tmp/" + botNameCamelCase + "/src/index.ts"),
+        path.join(__dirname, botGenerationPath, "/src/index.ts"),
         `import { ${botNamePascalCase} } from "./${botNameCamelCase}"`
       );
     });
 
     it("a declaration component with the given name", () => {
       assert.fileContent(
-        path.join(__dirname, "tmp/" + botNameCamelCase + "/src/index.ts"),
+        path.join(__dirname, botGenerationPath, "/src/index.ts"),
         `let bot: ${botNamePascalCase}`
       );
     });
 
     it("an instantiation component with the given name", () => {
       assert.fileContent(
-        path.join(__dirname, "tmp/" + botNameCamelCase + "/src/index.ts"),
+        path.join(__dirname, botGenerationPath, "/src/index.ts"),
         `bot = new ${botNamePascalCase}`
       );
     });
@@ -141,7 +136,8 @@ describe("The generator-botbuilder-enterprise ", () => {
       assert.fileContent(
         path.join(
           __dirname,
-          "tmp/" + botNameCamelCase + "/src/" + botNameCamelCase + ".ts"
+          botGenerationPath,
+          "/src/" + botNameCamelCase + ".ts"
         ),
         `export class ${botNamePascalCase}`
       );
@@ -151,7 +147,8 @@ describe("The generator-botbuilder-enterprise ", () => {
       assert.fileContent(
         path.join(
           __dirname,
-          "tmp/" + botNameCamelCase + "/src/" + botNameCamelCase + ".ts"
+          botGenerationPath,
+          "/src/" + botNameCamelCase + ".ts"
         ),
         `("${botNamePascalCase}")`
       );
